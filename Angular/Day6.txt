@@ -1,0 +1,76 @@
+DECLARE  
+  x NUMBER := 0;  
+BEGIN  
+  LOOP -- After CONTINUE statement, control resumes here  
+    DBMS_OUTPUT.PUT_LINE ('Inside loop:  x = ' || TO_CHAR(x));  
+    x := x + 1;  
+    IF x < 3 THEN  
+      CONTINUE;  
+    END IF;  
+    DBMS_OUTPUT.PUT_LINE  
+      ('Inside loop, after CONTINUE:  x = ' || TO_CHAR(x));  
+    EXIT WHEN x = 5;  
+  END LOOP;  
+   
+  DBMS_OUTPUT.PUT_LINE (' After loop:  x = ' || TO_CHAR(x));  
+END;  
+--------------------------------------------------------------------
+
+DECLARE 
+   a number(2) := 10; 
+BEGIN 
+   -- while loop execution  
+   WHILE a < 20 LOOP 
+      dbms_output.put_line ('value of a: ' || a); 
+      a := a + 1; 
+      IF a = 15 THEN 
+         -- skip the loop using the CONTINUE statement 
+         a := a + 1; 
+         CONTINUE; 
+      END IF; 
+   END LOOP; 
+END; 
+------------------------------------------------------------------
+
+DECLARE
+  l_salary employee.salary%TYPE;
+  l_fname employee.fname%TYPE := 'Sri';
+BEGIN
+  SELECT salary
+  INTO l_salary
+  FROM employee
+  WHERE fname = l_fname;
+
+  BEGIN
+    UPDATE employee
+    SET salary = l_salary + 5000
+    WHERE fname = l_fname;
+    DBMS_OUTPUT.PUT_LINE('Salary updated.');
+  EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('Error updating table: ' || SQLERRM);
+  END;
+  DBMS_OUTPUT.PUT_LINE('More code here.');
+END;
+
+---------------------------------------------------------------
+
+DECLARE
+  n_emp_id EMPLOYEE.EID%TYPE := 5;
+BEGIN
+  DECLARE
+    n_emp_id employee.eid%TYPE := 3;
+    v_name   employee.fname%TYPE;
+  BEGIN
+    SELECT fname
+    INTO v_name
+    FROM employee
+    WHERE eid = n_emp_id;
+
+    DBMS_OUTPUT.PUT_LINE('First name of employee ' || n_emp_id || 
+                                       ' is ' || v_name);
+    EXCEPTION
+      WHEN no_data_found THEN
+        DBMS_OUTPUT.PUT_LINE('Employee ' || n_emp_id || ' not found');
+  END;
+END;
